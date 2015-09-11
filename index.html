@@ -4,8 +4,11 @@
     <head>
         <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom.css" />
-        <script type="text/javascript" src="scripts/angular.min.js"></script>
-        <script type="text/javascript" src="scripts/app.js"></script>
+        <!--<script type="text/javascript" src="scripts/angular.min.js"></script>-->
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-animate.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
     </head>
 	
 	<h1 class="text-center">Michael Lai.</h1>
@@ -16,12 +19,12 @@
     <body class="list-group" ng-controller="HostController as host">
 	
 		<!-- Start Repeating For Every Question -->
-        <div class="questionBox" ng-repeat="question in host.questions">
-		
-			<!-- Start Content for Every Question -->
-            <div ng-show="count == question.id">
+        <div class="animate-show container-fluid questionBox" ng-repeat="question in host.questions" >
 			
-                <h3>Question {{question.id}}</h3>
+			<!-- Start Content for Every Question -->
+            <div class="animate-show" ng-show="count == question.number">
+			
+                <h3>Question {{question.number}}</h3>
                 <ul>{{question.question}}</ul>
 				
             </div>
@@ -32,10 +35,8 @@
 
 </html>
 
-
 <script>
-	(function() {
-  var app = angular.module('quiz', []);
+  var app = angular.module('quiz', ['ngAnimate']);
 
   app.controller('HostController', function(){
     this.questions = gems;
@@ -47,7 +48,7 @@
 
   var gems = [
     {
-      id: '1',
+      number: '1',
       question: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
       shine: 8,
       price: 110.50,
@@ -72,7 +73,7 @@
       }]
     },
     {
-      id: '2',
+      number: '2',
       question: "Origin of the Bloodstone is unknown, hence its low value. It has a very high shine and 12 sides, however.",
       shine: 9,
       price: 22.90,
@@ -97,7 +98,7 @@
       }]
     },
     {
-      id: '3',
+      number: '3',
       question: "Zircon is our most coveted and sought after gem. You will pay much to be the proud owner of this gorgeous and high shine gem.",
       shine: 70,
       price: 1100,
@@ -127,7 +128,6 @@
       }]
     }
   ];
-})();
 
 
 </script>
