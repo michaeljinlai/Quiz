@@ -27,6 +27,17 @@
                 <h3>Question {{question.number}}</h3>
                 <ul>{{question.question}}</ul>
 				
+				<div ng-app="myApp" ng-controller="myCtrl">
+
+					<input ng-model="guess" type="text" placeholder="Input answer here"/>
+					<input ng-hide="true" ng-model="hidden" type="text" />
+					<div class="">       
+						<button class="btn btn-warning" ng-click="ToLower()">Check Answer</button>
+					</div>
+					<div ng-show="hidden == question.answer">Correct</div>
+					
+				</div>
+				
             </div>
 			
         </div>
@@ -36,11 +47,18 @@
 </html>
 
 <script>
+
   var app = angular.module('quiz', ['ngAnimate']);
 
   app.controller('HostController', function(){
     this.questions = gems;
   });
+  
+  app.controller('myCtrl', function($scope,$filter) {
+        $scope.ToLower=function(){
+			$scope.hidden=$filter('lowercase')($scope.guess);
+		};
+	});
 
   app.controller('CountController', function($scope){
     $scope.count = 0;
@@ -50,8 +68,8 @@
     {
       number: '1',
       question: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-      shine: 8,
-      price: 110.50,
+      answer: 'medusa',
+      status: 'unanswered',
       rarity: 7,
       color: '#CCC',
       faces: 14,
@@ -75,8 +93,8 @@
     {
       number: '2',
       question: "Origin of the Bloodstone is unknown, hence its low value. It has a very high shine and 12 sides, however.",
-      shine: 9,
-      price: 22.90,
+      answer: 'zeus',
+      status: 'unanswered',
       rarity: 6,
       color: '#EEE',
       faces: 12,
@@ -100,8 +118,8 @@
     {
       number: '3',
       question: "Zircon is our most coveted and sought after gem. You will pay much to be the proud owner of this gorgeous and high shine gem.",
-      shine: 70,
-      price: 1100,
+      answer: 'loki',
+      status: 'unanswered',
       rarity: 2,
       color: '#000',
       faces: 6,
@@ -129,5 +147,12 @@
     }
   ];
 
+  	var app = angular.module('myApp', []);
+	
+	app.controller('myCtrl', function($scope,$filter) {
+			$scope.ToLower=function(){
+				$scope.hidden=$filter('lowercase')($scope.guess);
+		};
+	});
 
 </script>
