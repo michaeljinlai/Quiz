@@ -19,7 +19,7 @@
     <body class="list-group" ng-controller="HostController as host">
 	
 		<!-- Start Repeating For Every Question -->
-        <div class="container-fluid questionBox" ng-class="{borderIfActive : count == question.number }" ng-repeat="question in host.questions" >
+        <div ng-show="count == question.number" class="container-fluid questionBox" ng-repeat="question in host.questions" >
 			
 			<!-- Start Content for Every Question -->
             <div class="questionContent" ng-show="count == question.number">
