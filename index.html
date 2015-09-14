@@ -13,28 +13,31 @@
 	
 	<h1 class="text-center">Michael Lai.</h1>
 	
+	<button ng-click="count = count - 1">Previous Question</button>
+    <div>Current Question: {{count}}</div>
+	
     <button ng-click="count = count + 1">Skip Question</button>
     <div>Current Question: {{count}}</div>
     
     <body class="list-group" ng-controller="HostController as host">
 	
 		<!-- Start Repeating For Every Question -->
-        <div ng-show="count == question.number" class="container-fluid questionBox" ng-repeat="question in host.questions" >
+        <div ng-show="count == question.number" class="container-fluid questionBox" ng-repeat="question in host.questions" ng-init="hint=false">
 			
 			<!-- Start Content for Every Question -->
             <div class="questionContent" ng-show="count == question.number">
-			
+								
                 <h3>Question {{question.number}}</h3>
                 <ul>{{question.question}}</ul>
+				<ul>{{question.status}}</ul>
 				
-				<div ng-app="myApp" ng-controller="myCtrl">
+				<div ng-app="quiz" ng-controller="HostController">
 
 					<input ng-model="guess" type="text" placeholder="Input answer here"/>
 					<input ng-hide="true" ng-model="hidden" type="text" />
 					<div class="">       
-						<button class="btn btn-warning" ng-click="ToLower()">Check Answer</button>
+						<button class="btn btn-warning" ng-if="hidden == question.answer">Correct!</button><button class="btn btn-warning" ng-click="ToLower()" ng-if="hidden != question.answer">Check Answer</button> <button class="btn btn-warning" ng-click="hint=true">Show Hint</button> <ul ng-if="hint == true">{{question.hint}}</ul>
 					</div>
-					<div ng-show="hidden == question.answer">Correct</div>
 					
 				</div>
 				
@@ -49,10 +52,14 @@
 <script>
 
   var app = angular.module('quiz', ['ngAnimate']);
-
-  app.controller('HostController', function(){
-    this.questions = gems;
-  });
+  
+  	app.controller('HostController', function($scope,$filter) {
+	    this.questions = gems;
+		$scope.count = 0;
+		$scope.ToLower=function(){
+			$scope.hidden=$filter('lowercase')($scope.guess);
+		};
+	});
   
   app.controller('myCtrl', function($scope,$filter) {
         $scope.ToLower=function(){
@@ -61,7 +68,7 @@
 	});
 
   app.controller('CountController', function($scope){
-    $scope.count = 0;
+    
   });
 
   var gems = [
@@ -69,7 +76,7 @@
       number: '1',
       question: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
       answer: 'medusa',
-      status: 'unanswered',
+      hint: 'A Mythical Creature',
       rarity: 7,
       color: '#CCC',
       faces: 14,
@@ -94,7 +101,7 @@
       number: '2',
       question: "Origin of the Bloodstone is unknown, hence its low value. It has a very high shine and 12 sides, however.",
       answer: 'zeus',
-      status: 'unanswered',
+      hint: 'A Mythical Creature',
       rarity: 6,
       color: '#EEE',
       faces: 12,
@@ -119,7 +126,7 @@
       number: '3',
       question: "Zircon is our most coveted and sought after gem. You will pay much to be the proud owner of this gorgeous and high shine gem.",
       answer: 'loki',
-      status: 'unanswered',
+      shint: 'A Mythical Creature',
       rarity: 2,
       color: '#000',
       faces: 6,
@@ -146,13 +153,5 @@
       }]
     }
   ];
-
-  	var app = angular.module('myApp', []);
-	
-	app.controller('myCtrl', function($scope,$filter) {
-			$scope.ToLower=function(){
-				$scope.hidden=$filter('lowercase')($scope.guess);
-		};
-	});
 
 </script>
