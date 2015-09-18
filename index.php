@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html ng-app="quiz">
     
     <head>
@@ -22,12 +21,12 @@
     <body class="list-group" ng-controller="HostController as host">
 	
 		<!-- Start Repeating For Every Question -->
-        <div ng-show="count == question.number" class="container-fluid questionBox" ng-repeat="question in host.questions" ng-init="hint=false">
+        <div ng-show="count == question.id" class="container-fluid questionBox" ng-repeat="question in names" ng-init="hint=false">
 			
 			<!-- Start Content for Every Question -->
-            <div class="questionContent" ng-show="count == question.number">
+            <div class="questionContent" ng-show="count == question.id">
 								
-                <h3>Question {{question.number}}</h3>
+                <h3>Question {{question.id}}</h3>
                 <ul>{{question.question}}</ul>
 				<ul>{{question.status}}</ul>
 				
@@ -44,7 +43,7 @@
             </div>
 			
         </div>
-		
+		<div ng-repeat="x in names">8</div>
     </body>
 	
 
@@ -55,12 +54,14 @@
 
   var app = angular.module('quiz', ['ngAnimate']);
   
-  	app.controller('HostController', function($scope,$filter) {
+  	app.controller('HostController', function($scope,$filter,$http) {
 	    this.questions = gems;
 		$scope.count = 0;
 		$scope.ToLower=function(){
 			$scope.hidden=$filter('lowercase')($scope.guess);
 		};
+		$http.get("http://localhost/quiz/questions.php")
+		.success(function (response) {$scope.names = response;});
 	});
   
   app.controller('myCtrl', function($scope,$filter) {

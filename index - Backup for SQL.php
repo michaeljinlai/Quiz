@@ -1,4 +1,41 @@
-<!DOCTYPE html>
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "wig";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+$sql = "SELECT id, question, answer FROM questions";
+$result = $conn->query($sql);
+
+$index = 0;
+$yourArray = array();
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        //echo "id: " . $row["id"]. " - Name: " . $row["question"]. " " . $row["answer"]. "<br>";
+		$yourArray[$index] = $row;
+		$index++;
+    }
+} else {
+    echo "0 results";
+}
+
+//echo var_dump($yourArray);
+
+$res = json_encode($yourArray);
+
+$conn->close();
+
+?>
+
 <html ng-app="quiz">
     
     <head>
@@ -44,7 +81,7 @@
             </div>
 			
         </div>
-		
+		<div ng-repeat="x in names">8</div>
     </body>
 	
 
@@ -55,12 +92,14 @@
 
   var app = angular.module('quiz', ['ngAnimate']);
   
-  	app.controller('HostController', function($scope,$filter) {
+  	app.controller('HostController', function($scope,$filter,$http) {
 	    this.questions = gems;
 		$scope.count = 0;
 		$scope.ToLower=function(){
 			$scope.hidden=$filter('lowercase')($scope.guess);
 		};
+		$http.get("http://localhost/quiz/questions.php")
+		.success(function (response) {$scope.names = response;});
 	});
   
   app.controller('myCtrl', function($scope,$filter) {
